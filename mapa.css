@@ -1,0 +1,312 @@
+html, body { /* # Selecciona toda la estructura base de tu página web. */
+    margin: 0; /* # Elimina el margen exterior que los navegadores ponen por defecto. */
+    padding: 0; /* # Elimina el espacio interior por defecto. */
+    height: 100%; /* # Fuerza a que la página ocupe el 100% del alto de la pantalla. */
+    width: 100%; /* # Fuerza a que la página ocupe el 100% del ancho de la pantalla. */
+    font-family: 'Poppins', sans-serif; /* # Aplica el tipo de letra Poppins a toda la web. */
+    overflow: hidden; /* # Oculta las barras de desplazamiento (scroll) para que parezca una app móvil. */
+}
+
+#login-screen { /* # Selecciona el contenedor principal del inicio de sesión. */
+    position: fixed; /* # Lo deja anclado a la pantalla, aunque el usuario intente hacer scroll. */
+    top: 0; /* # Lo pega al borde superior exacto. */
+    left: 0; /* # Lo pega al borde izquierdo exacto. */
+    width: 100%; /* # Hace que cubra todo el ancho disponible. */
+    height: 100%; /* # Hace que cubra todo el alto disponible. */
+    background-image: url('FondoNubes.jpg'); /* # Pone tu imagen de nubes como fondo. */
+    background-size: cover; /* # Estira la imagen para que cubra todo el espacio sin dejar huecos en blanco. */
+    background-position: center; /* # Centra la imagen de fondo para que no se corte lo importante. */
+    display: flex; /* # Activa Flexbox para poder centrar el contenido (la tarjeta) fácilmente. */
+    justify-content: center; /* # Centra la tarjeta de login horizontalmente. */
+    align-items: center; /* # Centra la tarjeta de login verticalmente. */
+    z-index: 9999; /* # Lo pone muy por encima del mapa. */
+}
+
+.login-card { /* # Selecciona la tarjeta blanca donde van los botones. */
+    background: transparent; /* # Le quita el color de fondo para que se vean las nubes. */
+    padding: 20px; /* # Da espacio interior para no asfixiar los bordes en la pantalla pequeña. */
+    text-align: center; /* # Centra todos los textos e imágenes que estén adentro. */
+    width: 90%; /* # Asegura que la tarjeta use casi todo el ancho, pero deje un pequeño margen a los lados. */
+    max-width: 400px; /* # Límite para que no se estire demasiado y se deforme en pantallas de PC. */
+}
+
+.login-card img { /* # Selecciona la imagen decorativa que está dentro de la tarjeta. */
+    display: none; /* # La oculta completamente para ahorrar espacio en esta versión. */
+}
+
+.login-card h2 { /* # Selecciona el título principal "WayNorte". */
+    font-size: 3rem; /* # Letra ajustada y grande para que el título destaque. */
+    color: #ffffff; /* # Pinta las letras de color blanco puro. */
+    margin: 0 0 10px 0; /* # Le quita los márgenes arriba y a los lados, y le da 10px de separación hacia abajo. */
+    font-weight: 700; /* # Hace que la letra sea en "negrita". */
+    text-shadow: 2px 2px 8px rgba(0,0,0,0.5); /* # Le da una sombra oscura detrás para que se lea bien. */
+    position: relative; /* # Lo prepara para poder usar z-index y moverlo por capas. */
+    z-index: 20; /* # Lo pone por delante de las burbujas flotantes para que no lo tapen. */
+}
+
+.login-card p { /* # Selecciona el párrafo descriptivo de tu proyecto. */
+    color: #ffffff; /* # Pinta el texto de blanco. */
+    font-size: 1rem; /* # Tamaño de lectura estándar, ideal para móviles. */
+    margin-bottom: 30px; /* # Lo separa de los campos de texto que van justo debajo. */
+    line-height: 1.5; /* # Da un respiro entre las líneas de texto para que sea más fácil de leer. */
+    text-shadow: 1px 1px 5px rgba(0,0,0,0.5); /* # Sombra sutil para mejorar la legibilidad. */
+    position: relative; 
+    z-index: 20; 
+}
+
+/* --- NUEVOS ESTILOS DEL FORMULARIO DE AUTENTICACIÓN --- */
+.auth-container { /* # Contenedor de los inputs y botones nuevos. */
+    display: flex; /* # Activa Flexbox para los elementos internos. */
+    flex-direction: column; /* # Apila los elementos uno debajo de otro. */
+    gap: 12px; /* # Crea un espacio exacto de 12px entre cada input y botón. */
+    width: 100%; /* # Ocupa todo el ancho disponible de la tarjeta. */
+    position: relative; 
+    z-index: 20; /* # Asegura que se pueda hacer clic por encima de las burbujas. */
+}
+
+.input-field { /* # Cajas donde el usuario escribe su correo y contraseña. */
+    width: 100%; /* # Ocupa todo el ancho del contenedor. */
+    padding: 14px; /* # Espacio interior para que el texto no quede pegado a los bordes. */
+    border: none; /* # Quita el borde negro que traen por defecto los navegadores. */
+    border-radius: 25px; /* # Redondea mucho las esquinas. */
+    font-family: 'Poppins', sans-serif; /* # Usa la misma tipografía bonita del proyecto. */
+    font-size: 1rem; /* # Tamaño de letra cómodo para leer. */
+    box-sizing: border-box; /* # Evita que el padding rompa el ancho total. */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* # Sombrita para dar efecto de profundidad. */
+}
+
+.btn-login { /* # Botón principal de Iniciar Sesión. */
+    background-color: #5d536b; /* # Color morado/grisáceo característico. */
+    color: white; /* # Texto en blanco. */
+    border: none; /* # Sin borde. */
+    padding: 14px; /* # Espaciado interior amplio. */
+    border-radius: 25px; /* # Bordes redondeados. */
+    cursor: pointer; /* # Cambia el cursor a una manito. */
+    font-family: 'Poppins', sans-serif; /* # Tipografía oficial. */
+    font-size: 1.1rem; /* # Letra ligeramente más grande para destacar. */
+    font-weight: 600; /* # Letra en negrita. */
+    transition: all 0.3s ease; /* # Animación suave al pasar el mouse. */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2); /* # Sombra para darle relieve. */
+}
+
+.btn-login:hover { /* # Efecto al pasar el mouse sobre Iniciar Sesión. */
+    background-color: #4a4255; /* # Color ligeramente más oscuro. */
+    transform: translateY(-2px); /* # Levanta el botón 2 píxeles hacia arriba. */
+}
+
+.btn-register { /* # Botón secundario para Crear Cuenta. */
+    background-color: transparent; /* # Fondo transparente. */
+    color: white; /* # Texto blanco. */
+    border: 2px solid white; /* # Línea blanca de 2 píxeles rodeando el botón. */
+    padding: 12px; /* # Espaciado interior. */
+    border-radius: 25px; /* # Bordes redondeados. */
+    cursor: pointer; /* # Cursor de manito. */
+    font-family: 'Poppins', sans-serif; /* # Tipografía oficial. */
+    font-size: 1rem; /* # Tamaño de letra normal. */
+    font-weight: 600; /* # Letra en negrita. */
+    transition: all 0.3s ease; /* # Animación suave. */
+}
+
+.btn-register:hover { /* # Efecto al pasar el mouse sobre Crear Cuenta. */
+    background-color: rgba(255, 255, 255, 0.2); /* # Pinta el fondo blanco transparente. */
+}
+/* ------------------------------------------------------ */
+
+@keyframes flotarBurbujas { /* # Define la animación de las burbujas de fondo. */
+  0% { transform: translateY(0px) rotate(0deg); opacity: 0.85; }
+  25% { transform: translateX(8px) translateY(-15px) rotate(2deg); }
+  50% { transform: translateX(15px) translateY(-25px) rotate(5deg); opacity: 0.6; }
+  75% { transform: translateX(8px) translateY(-15px) rotate(2deg); }
+  100% { transform: translateY(0px) rotate(0deg); opacity: 0.85; }
+}
+
+.burbuja { /* # Estilos generales para todas las burbujas. */
+  position: absolute; 
+  background-size: cover; 
+  background-position: center;
+  z-index: 10; 
+  pointer-events: none; /* # Hace que los clics traspasen las burbujas hacia los inputs y botones. */
+  animation: flotarBurbujas 10s ease-in-out infinite;
+}
+
+.burbuja-1 { /* # Configuración específica de la burbuja 1. */
+  width: 140px; height: 140px;
+  background-image: url('burbuja1.png'); 
+  top: 8%; left: 5%; 
+  animation-duration: 12s; animation-delay: 0s; 
+}
+
+.burbuja-2 { /* # Configuración específica de la burbuja 2. */
+  width: 120px; height: 120px;
+  background-image: url('burbuja2.png'); 
+  top: 15%; right: 8%; 
+  animation-duration: 15s; animation-delay: 2s;
+}
+
+.burbuja-3 { /* # Configuración específica de la burbuja 3. */
+  width: 130px; height: 130px;
+  background-image: url('burbuja3.png'); 
+  bottom: 2%; right: 2%; 
+  background-size: contain; background-repeat: no-repeat;
+  animation-duration: 11s; animation-direction: reverse; 
+}
+
+.burbuja-4 { /* # Configuración específica de la burbuja 4. */
+  width: 150px; height: 150px;
+  background-image: url('burbuja4.png');
+  bottom: 5%; left: 10%; 
+  animation-duration: 14s; animation-delay: 0s;
+}
+
+#map {  /* # Contenedor principal del mapa Leaflet. */
+    height: 100vh;  /* # Ocupa toda la altura visual. */
+    width: 100vw;  /* # Ocupa toda la anchura visual. */
+    display: none;  /* # Permanece oculto hasta que el usuario inicie sesión correctamente. */
+}
+
+/* Popups (Tarjetas al hacer clic en un marcador) */
+.custom-popup .leaflet-popup-content-wrapper { padding: 0; overflow: hidden; border-radius: 15px; } /* # Quita márgenes y redondea bordes. */
+.custom-popup .leaflet-popup-content { margin: 0; width: 300px !important; } /* # Fuerza un ancho de 300px exactos. */
+.popup-img { width: 100%; height: 120px; object-fit: cover; } /* # Adapta la imagen sin deformarla. */
+.popup-info { padding: 12px; } /* # Da espacio interno al texto debajo de la imagen. */
+
+/* Comentarios dentro de los Popups */
+.comment-section { border-top: 1px solid #eee; margin-top: 10px; padding-top: 10px; } /* # Línea separadora. */
+.comment-list { font-size: 12px; max-height: 100px; overflow-y: auto; margin-bottom: 10px; } /* # Zona scrolleable si hay muchas opiniones. */
+.comment-item { background: #f9f9f9; padding: 8px; border-radius: 5px; margin-bottom: 6px; border-left: 3px solid #1e90ff; display: flex; justify-content: space-between; align-items: center; } /* # Diseño de cada comentario individual. */
+.btn-delete { background: #ff4757; color: white; border: none; padding: 2px 6px; border-radius: 4px; cursor: pointer; font-size: 10px; } /* # Botón rojo para eliminar comentarios. */
+.comment-input { width: 92%; padding: 6px; font-size: 12px; border: 1px solid #ddd; border-radius: 5px; margin-bottom: 5px; font-family: 'Poppins'; } /* # Caja de texto para escribir una opinión. */
+.btn-comment { background: #2ed573; color: white; border: none; padding: 8px; border-radius: 5px; cursor: pointer; width: 100%; font-weight: 600; } /* # Botón verde para publicar la opinión. */
+
+/* Nuevo Botón Flotante de GPS */
+.btn-locate { position: absolute; bottom: 165px; right: 20px; z-index: 1000; width: 50px; height: 50px; background: white; border: none; border-radius: 50%; cursor: pointer; font-size: 24px; box-shadow: 0 4px 15px rgba(0,0,0,0.2); display: flex; align-items: center; justify-content: center; transition: 0.2s; } /* # Lo ubica abajo a la derecha y lo hace flotante. */
+.btn-locate:hover { transform: scale(1.1); background: #f8f8f8; } /* # Crece un poco al pasar el cursor. */
+
+/* Control de Capas (Filtros de la esquina superior derecha) */
+.leaflet-control-layers { border-radius: 12px !important; border: none !important; box-shadow: 0 4px 15px rgba(0,0,0,0.15) !important; padding: 10px !important; font-family: 'Poppins'; } /* # Estiliza el cuadro nativo de Leaflet. */
+
+/* GPS Icon (Puntito azul del usuario) */
+.user-location-icon { background-color: #007bff; border: 2px solid white; border-radius: 50%; } /* # Círculo central azul y blanco. */
+.user-location-icon::after { content: ''; position: absolute; width: 100%; height: 100%; border-radius: 50%; background-color: #007bff; opacity: 0.4; animation: pulse 2s infinite; top: 0; left: 0; } /* # Crea la onda expansiva tipo radar. */
+@keyframes pulse { 0% { transform: scale(1); opacity: 0.4; } 100% { transform: scale(3); opacity: 0; } } /* # Anima la onda para que crezca y desaparezca. */
+
+/* Marcadores - Leyenda Compacta (Cuadro abajo a la derecha) */
+.legend { 
+    position: absolute; bottom: 30px; right: 20px; z-index: 1000; 
+    background: white; padding: 10px 14px; border-radius: 12px; 
+    box-shadow: 0 4px 15px rgba(0,0,0,0.15); max-width: 140px; 
+} /* # Ubica el cuadro y le da diseño. */
+
+.legend h4 { margin: 0 0 8px 0; font-size: 14px; font-weight: 600; } /* # Título interno. */
+
+.legend-item { display: flex; align-items: center; font-size: 11px; margin-bottom: 4px; } /* # Fila de cada ítem de la leyenda. */
+
+.circle { width: 8px; height: 8px; border-radius: 50%; margin-right: 8px; flex-shrink: 0; } /* # Circulito de color. */
+
+/* Colores de la Leyenda */
+.tur { background: #3388ff; } /* # Azul para Turismo. */
+.reci { background: #2ed573; } /* # Verde para Reciclaje. */
+.para { background: #f13030; } /* # Rojo para Paraderos. */
+
+/* =========================================
+   Micros / Líneas y Switches
+   ========================================= */
+
+.contenedor-lineas { 
+    margin-top: 10px; /* # Separación superior del contenedor de micros. */
+    padding-top: 10px; /* # Espacio interior superior. */
+    border-top: 1px solid #ddd; /* # Línea divisoria gris clara. */
+}
+
+.contenedor-lineas h4 { 
+    font-size: 13px; /* # Tamaño de la letra del título de micros. */
+    margin-bottom: 8px; /* # Separación inferior. */
+    color: #555; /* # Color de texto gris oscuro. */
+    font-family: 'Poppins', sans-serif; /* # Usa la misma tipografía bonita. */
+}
+
+.micro-item { 
+    background: #fdfdfd; /* # Fondo casi blanco para que resalte. */
+    padding: 8px; /* # Espacio interior de la caja de cada micro. */
+    border-radius: 6px; /* # Bordes levemente redondeados. */
+    margin-bottom: 8px; /* # Separación entre los bloques de micros. */
+    border: 1px solid #eee; /* # Borde sutil. */
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05); /* # Sombra muy delicada. */
+}
+
+.micro-titulo { 
+    font-size: 12px; /* # Tamaño de texto para el nombre de la micro. */
+    color: #222; /* # Texto casi negro. */
+    display: block; /* # Fuerza que ocupe su propia línea horizontal. */
+    margin-bottom: 6px; /* # Separación hacia los botones de abajo. */
+    font-family: 'Poppins', sans-serif; /* # Tipografía oficial del proyecto. */
+}
+
+.opciones-ruta { 
+    display: flex; /* # Activa Flexbox para poner botones uno al lado del otro. */
+    gap: 10px; /* # Distancia entre los botones de ida y vuelta. */
+    justify-content: space-between; /* # Manda uno a la izquierda y otro a la derecha. */
+    margin-top: 4px; /* # Separación superior. */
+    padding: 0 5px; /* # Espaciado a los costados. */
+}
+
+.toggle-label { 
+    display: flex; /* # Alinea el puntito de color y el texto. */
+    align-items: center; /* # Los centra verticalmente. */
+    gap: 6px; /* # Espacio entre el texto y el interruptor. */
+    font-size: 11px; /* # Tamaño de fuente pequeño. */
+    cursor: pointer; /* # Cursor de manito al pasar el ratón. */
+    font-weight: 600; /* # Texto en negrita para resaltar. */
+    color: #444; /* # Color de texto gris medio. */
+}
+
+.color-dot { 
+    width: 10px; /* # Ancho del círculo. */
+    height: 10px; /* # Alto del círculo. */
+    border-radius: 50%; /* # Redondea al máximo para que sea un círculo. */
+    display: inline-block; /* # Permite que coexista en línea con el texto. */
+    box-shadow: 0 1px 2px rgba(0,0,0,0.2); /* # Sombrita para el punto. */
+}
+
+.switch { 
+    position: relative; /* # Base para ubicar la bolita del interior. */
+    display: inline-block; /* # Se mantiene en la misma línea. */
+    width: 32px; /* # Ancho total del interruptor. */
+    height: 18px; /* # Alto total del interruptor. */
+}
+
+.switch input { 
+    opacity: 0; /* # Oculta la caja de check original (invisible). */
+    width: 0; /* # Elimina su tamaño físico ancho. */
+    height: 0; /* # Elimina su tamaño físico alto. */
+}
+
+.slider { 
+    position: absolute; /* # Cubre completamente la base del switch. */
+    cursor: pointer; /* # Cursor de manito al pasar sobre él. */
+    top: 0; left: 0; right: 0; bottom: 0; /* # Se estira hacia las 4 esquinas. */
+    background-color: #ccc; /* # Fondo gris (apagado). */
+    transition: .3s; /* # Animación de 0.3 segundos para que sea suave. */
+    border-radius: 18px; /* # Bordes super redondeados tipo pastilla. */
+}
+
+.slider:before { 
+    position: absolute; /* # Se ubica libremente dentro de su contenedor. */
+    content: ""; /* # Necesario para dibujar un elemento vacío (la bolita). */
+    height: 14px; /* # Alto de la bolita. */
+    width: 14px; /* # Ancho de la bolita. */
+    left: 2px; /* # Margen izquierdo cuando está apagado. */
+    bottom: 2px; /* # Margen inferior. */
+    background-color: white; /* # Color blanco para la bolita. */
+    transition: .3s; /* # Se anima al deslizarse. */
+    border-radius: 50%; /* # Se hace un círculo. */
+    box-shadow: 0 1px 2px rgba(0,0,0,0.2); /* # Sombra para darle volumen. */
+}
+
+input:checked + .slider { 
+    background-color: #2ed573; /* # Cambia a tu color verde cuando se enciende. */
+}
+
+input:checked + .slider:before { 
+    transform: translateX(14px); /* # Mueve la bolita hacia la derecha al encenderse. */
+}
