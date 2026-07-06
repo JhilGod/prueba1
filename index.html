@@ -39,6 +39,11 @@
     <button onclick="centrarEnUsuario()" class="btn-locate" title="Mi ubicación"> 
         🎯 
     </button> 
+    
+    <!-- NUEVO: Botón para el Modo Nocturno -->
+    <button id="btn-darkMode" class="btn-dark" title="Modo Nocturno">
+        🌙
+    </button>
 
     <div class="legend" id="map-legend" style="display: none;"> 
         <h4>Marcadores</h4> 
@@ -46,10 +51,8 @@
         <div class="legend-item"><span class="circle reci"></span> Reciclaje</div> 
         <div class="legend-item"><span class="circle para"></span> Paraderos</div> 
     </div> <!-- Cierra la caja de la leyenda. -->
-
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script> 
     
-<!-- 1. PRIMERO: Leaflet (El mapa base) -->
+    <!-- 1. PRIMERO: Leaflet (El mapa base) -->
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script> 
     
     <!-- 2. SEGUNDO: Plugin de Flechas (Desde un servidor más estable) -->

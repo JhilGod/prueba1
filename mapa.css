@@ -182,6 +182,26 @@ html, body { /* # Selecciona toda la estructura base de tu página web. */
 .btn-locate { position: absolute; bottom: 165px; right: 20px; z-index: 1000; width: 50px; height: 50px; background: white; border: none; border-radius: 50%; cursor: pointer; font-size: 24px; box-shadow: 0 4px 15px rgba(0,0,0,0.2); display: flex; align-items: center; justify-content: center; transition: 0.2s; } /* # Lo ubica abajo a la derecha y lo hace flotante. */
 .btn-locate:hover { transform: scale(1.1); background: #f8f8f8; } /* # Crece un poco al pasar el cursor. */
 
+/* NUEVO: Botón Flotante para Modo Nocturno */
+.btn-dark {
+    position: absolute; 
+    bottom: 230px; /* # Se ubica justo arriba del botón de GPS. */
+    right: 20px; 
+    z-index: 1000; 
+    width: 50px; 
+    height: 50px; 
+    background: white; 
+    border: none; 
+    border-radius: 50%; 
+    cursor: pointer; 
+    font-size: 24px; 
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2); 
+    display: flex; 
+    align-items: center; 
+    justify-content: center; 
+    transition: background 0.3s, color 0.3s;
+}
+
 /* Control de Capas (Filtros de la esquina superior derecha) */
 .leaflet-control-layers { border-radius: 12px !important; border: none !important; box-shadow: 0 4px 15px rgba(0,0,0,0.15) !important; padding: 10px !important; font-family: 'Poppins'; } /* # Estiliza el cuadro nativo de Leaflet. */
 
@@ -309,4 +329,64 @@ input:checked + .slider {
 
 input:checked + .slider:before { 
     transform: translateX(14px); /* # Mueve la bolita hacia la derecha al encenderse. */
+}
+
+/* =========================================
+   MODO NOCTURNO (TIPO GOOGLE MAPS)
+   ========================================= */
+
+/* 1. Filtro inteligente de inversión y ajuste de contraste para las calles */
+body.dark-mode .leaflet-tile-pane {
+    filter: invert(100%) hue-rotate(180deg) brightness(95%) contrast(90%);
+}
+
+/* 2. Oscurecer la burbuja blanca del paradero (Popup) */
+body.dark-mode .leaflet-popup-content-wrapper,
+body.dark-mode .leaflet-popup-tip {
+    background-color: #2b3643;
+    color: #e8eaed;
+}
+
+/* 3. Estilizar los inputs, selects y áreas de texto del popup */
+body.dark-mode .leaflet-popup-content input,
+body.dark-mode .leaflet-popup-content select,
+body.dark-mode .leaflet-popup-content textarea {
+    background-color: #3b4653;
+    color: white;
+    border: 1px solid #555;
+}
+
+/* 4. Títulos del popup en modo oscuro */
+body.dark-mode .leaflet-popup-content h4, 
+body.dark-mode .leaflet-popup-content h3, 
+body.dark-mode .leaflet-popup-content b {
+    color: #ffffff; 
+}
+
+/* 5. Adaptar el bloque de micros y líneas divisorias */
+body.dark-mode .contenedor-lineas {
+    border-top: 1px solid #444;
+}
+
+body.dark-mode .micro-item {
+    background-color: #3b4653;
+    border: 1px solid #555;
+}
+
+body.dark-mode .micro-titulo,
+body.dark-mode .toggle-label {
+    color: #e8eaed;
+}
+
+/* 6. Adaptar la caja de la leyenda al modo nocturno */
+body.dark-mode .legend {
+    background-color: rgba(43, 54, 67, 0.95);
+    color: #e8eaed;
+    border: 1px solid #444;
+}
+
+/* 7. Adaptar el panel de control de capas (superior derecho) */
+body.dark-mode .leaflet-control-layers {
+    background-color: rgba(43, 54, 67, 0.95) !important;
+    color: #e8eaed !important;
 }

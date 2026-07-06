@@ -173,6 +173,17 @@ async function initMap() {
     map = L.map('map').setView([-18.4783, -70.3126], 15);
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
 
+    // --- NUEVO: Limpieza automática de rutas al cerrar un paradero ---
+    map.on('popupclose', () => {
+        // Recorremos el diccionario de rutas activas y las borramos todas del mapa
+        for (const capaId in capasRutasActivas) {
+            if (capasRutasActivas.hasOwnProperty(capaId)) {
+                map.removeLayer(capasRutasActivas[capaId]);
+                delete capasRutasActivas[capaId];
+            }
+        }
+    });
+
     const layerTurismo = L.layerGroup().addTo(map);
     const layerReciclaje = L.layerGroup().addTo(map);
     const layerParaderos = L.layerGroup().addTo(map);
@@ -187,7 +198,7 @@ async function initMap() {
             const iconReciclaje = new L.Icon({ iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-green.png', shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png', iconSize: [25, 41], iconAnchor: [12, 41], popupAnchor: [1, -34], shadowSize: [41, 41] });
             const iconParadero = new L.Icon({ iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-red.png', shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png', iconSize: [25, 41], iconAnchor: [12, 41], popupAnchor: [1, -34], shadowSize: [41, 41] });
 
-            // --- NUEVO: Generar el HTML de las líneas Ocultando botones que no corresponden ---
+            // --- Generar el HTML de las líneas Ocultando botones que no corresponden ---
             let lineasHtml = "";
             if (p.lineas_que_pasan && p.lineas_que_pasan.length > 0) {
                 lineasHtml = `<div class="contenedor-lineas">
@@ -293,7 +304,7 @@ async function initMap() {
     }
 }
 
-// --- NUEVO: 4. LÓGICA PARA DIBUJAR LAS RUTAS DESDE FIRESTORE CON FLECHAS ---
+// --- 4. LÓGICA PARA DIBUJAR LAS RUTAS DESDE FIRESTORE CON FLECHAS ---
 
 async function alternarCapaRuta(nombreLinea, tipoRuta, encendido) {
     // Llave única y limpia para identificar la capa (Ej: "Linea 4_ruta_vuelta")
@@ -366,3 +377,22 @@ async function alternarCapaRuta(nombreLinea, tipoRuta, encendido) {
         }
     }
 }
+
+// --- NUEVO: 5. CONTROL DEL MODO NOCTURNO ---
+document.getElementById('btn-darkMode').addEventListener('click', function() {
+    // Alterna la clase 'dark-mode' en el cuerpo de la página
+    document.body.classList.toggle('dark-mode');
+    
+    // Cambia el aspecto del botón
+    if (document.body.classList.contains('dark-mode')) {
+        this.innerHTML = '☀️'; 
+        this.title = "Modo Claro";
+        this.style.background = "#2b3643"; 
+        this.style.color = "white";
+    } else {
+        this.innerHTML = '🌙'; 
+        this.title = "Modo Nocturno";
+        this.style.background = "white"; 
+        this.style.color = "black";
+    }
+});
