@@ -6,8 +6,6 @@
     <title>WayNorte</title> 
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" /> 
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet"> 
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    
     <link rel="stylesheet" type="text/css" href="mapa.css"> 
 
     <script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-app-compat.js"></script>
@@ -41,26 +39,19 @@
         🎯 
     </button> 
     
-    <div class="night-mode-floating-container" title="Alternar Modo Nocturno">
-        <span class="night-mode-label">Modo Nocturno</span>
-        <label class="theme-switch">
-            <input type="checkbox" id="dark-mode-toggle">
-            <span class="theme-slider">
-                <i class="fas fa-sun icon-sun"></i>
-                <i class="fas fa-moon icon-moon"></i>
-            </span>
-        </label>
-    </div>
+    <button id="btn-darkMode" class="btn-dark" title="Modo Nocturno">
+        🌙
+    </button>
 
     <div class="legend" id="map-legend" style="display: none;"> 
         <h4>Marcadores</h4> 
         <div class="legend-item"><span class="circle tur"></span> Turismo</div> 
         <div class="legend-item"><span class="circle reci"></span> Reciclaje</div> 
         <div class="legend-item"><span class="circle para"></span> Paraderos</div> 
-    </div> 
+    </div> <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script> 
     
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script> 
     <script src="https://unpkg.com/leaflet-polylinedecorator@1.6.0/dist/leaflet.polylineDecorator.js"></script>
+
     <script src="mapa.js"></script> 
 </body> 
 </html>
