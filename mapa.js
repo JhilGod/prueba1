@@ -173,15 +173,9 @@ async function initMap() {
     map = L.map('map').setView([-18.4783, -70.3126], 15);
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
 
-    // --- NUEVO: Limpieza automática de rutas al cerrar un paradero ---
-    map.on('popupclose', () => {
-        // Recorremos el diccionario de rutas activas y las borramos todas del mapa
-        for (const capaId in capasRutasActivas) {
-            if (capasRutasActivas.hasOwnProperty(capaId)) {
-                map.removeLayer(capasRutasActivas[capaId]);
-                delete capasRutasActivas[capaId];
-            }
-        }
+    // NUEVO: Oculta la tarjetita automáticamente al pellizcar o alejar el mapa para que no estorbe la vista
+    map.on('zoomstart', () => {
+        map.closePopup();
     });
 
     const layerTurismo = L.layerGroup().addTo(map);
@@ -194,11 +188,12 @@ async function initMap() {
         const puntosArica = await respuesta.json(); 
 
         puntosArica.forEach(p => {
-            const iconTurismo = new L.Icon({ iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-blue.png', shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png', iconSize: [25, 41], iconAnchor: [12, 41], popupAnchor: [1, -34], shadowSize: [41, 41] });
-            const iconReciclaje = new L.Icon({ iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-green.png', shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png', iconSize: [25, 41], iconAnchor: [12, 41], popupAnchor: [1, -34], shadowSize: [41, 41] });
-            const iconParadero = new L.Icon({ iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-red.png', shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png', iconSize: [25, 41], iconAnchor: [12, 41], popupAnchor: [1, -34], shadowSize: [41, 41] });
+            // NUEVO: Íconos más pequeños [18, 29] para no cubrir toda la ciudad cuando te alejas
+            const iconTurismo = new L.Icon({ iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-blue.png', shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png', iconSize: [18, 29], iconAnchor: [9, 29], popupAnchor: [1, -24], shadowSize: [29, 29] });
+            const iconReciclaje = new L.Icon({ iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-green.png', shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png', iconSize: [18, 29], iconAnchor: [9, 29], popupAnchor: [1, -24], shadowSize: [29, 29] });
+            const iconParadero = new L.Icon({ iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-red.png', shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png', iconSize: [18, 29], iconAnchor: [9, 29], popupAnchor: [1, -24], shadowSize: [29, 29] });
 
-            // --- Generar el HTML de las líneas Ocultando botones que no corresponden ---
+            // --- NUEVO: Generar el HTML de las líneas Ocultando botones que no corresponden ---
             let lineasHtml = "";
             if (p.lineas_que_pasan && p.lineas_que_pasan.length > 0) {
                 lineasHtml = `<div class="contenedor-lineas">
@@ -214,11 +209,14 @@ async function initMap() {
 
                     // Si el sentido es "ida" O si aún no le asignas sentido en pgAdmin
                     if (linea.sentido === 'ida' || !linea.sentido) {
+                        const idIda = `${linea.nombre.trim()}_ruta_ida`;
+                        
+                        // CORREGIDO: Usamos la clase "switch-ruta" y "data-idcapa" para sincronizarlos después
                         lineasHtml += `
                             <label class="toggle-label">
                                 <div class="color-dot" style="background-color: #1e90ff;"></div> Ida
                                 <label class="switch">
-                                    <input type="checkbox" onchange="alternarCapaRuta('${linea.nombre}', 'ruta_ida', this.checked)">
+                                    <input type="checkbox" class="switch-ruta" data-idcapa="${idIda}" onchange="alternarCapaRuta('${linea.nombre}', 'ruta_ida', this.checked)">
                                     <span class="slider"></span>
                                 </label>
                             </label>`;
@@ -226,11 +224,14 @@ async function initMap() {
 
                     // Si el sentido es "vuelta" O si aún no le asignas sentido en pgAdmin
                     if (linea.sentido === 'vuelta' || !linea.sentido) {
+                        const idVuelta = `${linea.nombre.trim()}_ruta_vuelta`;
+                        
+                        // CORREGIDO: Usamos la clase "switch-ruta" y "data-idcapa" para sincronizarlos después
                         lineasHtml += `
                             <label class="toggle-label">
                                 <div class="color-dot" style="background-color: #ba1a3a;"></div> Vuelta
                                 <label class="switch">
-                                    <input type="checkbox" onchange="alternarCapaRuta('${linea.nombre}', 'ruta_vuelta', this.checked)">
+                                    <input type="checkbox" class="switch-ruta" data-idcapa="${idVuelta}" onchange="alternarCapaRuta('${linea.nombre}', 'ruta_vuelta', this.checked)">
                                     <span class="slider"></span>
                                 </label>
                             </label>`;
@@ -273,6 +274,21 @@ async function initMap() {
             
             marker.on('popupopen', () => {
                 cargarComentariosPopup(p.id);
+                
+                // --- NUEVO: Sincronización visual de los botones (switches) ---
+                // Le damos un respiro pequeñito de 10 milisegundos para que la tarjeta se dibuje en la pantalla
+                setTimeout(() => {
+                    const switches = document.querySelectorAll('.switch-ruta');
+                    switches.forEach(btn => {
+                        const idCapa = btn.getAttribute('data-idcapa');
+                        // Si la ruta está en nuestro diccionario de "rutas activas", encendemos el switch
+                        if (capasRutasActivas[idCapa]) {
+                            btn.checked = true;
+                        } else {
+                            btn.checked = false;
+                        }
+                    });
+                }, 10);
             });
 
             if (p.tipo === "turismo") marker.addTo(layerTurismo);
@@ -304,19 +320,24 @@ async function initMap() {
     }
 }
 
-// --- 4. LÓGICA PARA DIBUJAR LAS RUTAS DESDE FIRESTORE CON FLECHAS ---
+// --- NUEVO: 4. LÓGICA PARA DIBUJAR LAS RUTAS DESDE FIRESTORE CON FLECHAS ---
 
 async function alternarCapaRuta(nombreLinea, tipoRuta, encendido) {
     // Llave única y limpia para identificar la capa (Ej: "Linea 4_ruta_vuelta")
     const identificadorCapa = `${nombreLinea.trim()}_${tipoRuta.trim()}`;
 
     if (encendido) {
+        // Evitar que haga peticiones dobles si ya se está cargando
+        if (capasRutasActivas[identificadorCapa]) return;
+        
+        capasRutasActivas[identificadorCapa] = "cargando"; // Candado de seguridad temporal
+
         try {
             // Buscamos el documento en Firestore por el nombre de la línea
             const consulta = await db.collection("lineas").where("nombre", "==", nombreLinea).get();
             
-            if (consulta.empty) {
-                console.warn(`No se encontró la configuración para: ${nombreLinea} en Firestore.`);
+            // Si el usuario apagó el switch antes de que cargara, frenamos todo
+            if (consulta.empty || capasRutasActivas[identificadorCapa] !== "cargando") {
                 return;
             }
 
@@ -326,6 +347,7 @@ async function alternarCapaRuta(nombreLinea, tipoRuta, encendido) {
 
             if (!stringCoordenadas || stringCoordenadas === "[]") {
                 alert(`La ruta seleccionada para la ${nombreLinea} aún no tiene coordenadas cargadas.`);
+                delete capasRutasActivas[identificadorCapa];
                 return;
             }
 
@@ -360,30 +382,36 @@ async function alternarCapaRuta(nombreLinea, tipoRuta, encendido) {
             // 3. Agrupamos la línea y las flechas para poder tratarlas como un solo objeto
             const grupoCapa = L.layerGroup([polilinea, decorador]).addTo(map);
 
-            // Guardamos el grupo entero en el diccionario para borrarlo después
-            capasRutasActivas[identificadorCapa] = grupoCapa;
+            // Verificamos por última vez si no lo han apagado antes de dibujarlo en el mapa
+            if (capasRutasActivas[identificadorCapa] === "cargando") {
+                capasRutasActivas[identificadorCapa] = grupoCapa;
+            } else {
+                map.removeLayer(grupoCapa);
+            }
 
-            // Movemos la cámara para ver la ruta entera
-            map.fitBounds(polilinea.getBounds());
+            // map.fitBounds(polilinea.getBounds()); // ELIMINADO para que no aleje la cámara en celular
 
         } catch (error) {
             console.error("Error obteniendo el trazado desde Firestore:", error);
+            delete capasRutasActivas[identificadorCapa];
         }
     } else {
         // Si el switch se apaga, removemos el GRUPO (línea + flechas) del mapa usando el ID exacto
-        if (capasRutasActivas[identificadorCapa]) {
-            map.removeLayer(capasRutasActivas[identificadorCapa]);
-            delete capasRutasActivas[identificadorCapa];
+        const capa = capasRutasActivas[identificadorCapa];
+        if (capa) {
+            // Solo lo borra del mapa si ya había terminado de cargar
+            if (capa !== "cargando") {
+                map.removeLayer(capa);
+            }
+            delete capasRutasActivas[identificadorCapa]; // Elimina la memoria de la ruta
         }
     }
 }
 
-// --- NUEVO: 5. CONTROL DEL MODO NOCTURNO ---
+// --- CONTROL DEL MODO NOCTURNO ---
 document.getElementById('btn-darkMode').addEventListener('click', function() {
-    // Alterna la clase 'dark-mode' en el cuerpo de la página
     document.body.classList.toggle('dark-mode');
     
-    // Cambia el aspecto del botón
     if (document.body.classList.contains('dark-mode')) {
         this.innerHTML = '☀️'; 
         this.title = "Modo Claro";

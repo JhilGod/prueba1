@@ -1,14 +1,13 @@
 <!DOCTYPE html> 
 <html lang="es"> 
 <head> 
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"> 
     <meta charset="UTF-8"> 
     <title>WayNorte</title> 
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" /> 
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet"> 
     <link rel="stylesheet" type="text/css" href="mapa.css"> 
 
-    <!-- Firebase SDKs para cargar los trazados de las rutas -->
     <script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore-compat.js"></script>
 </head> 
@@ -40,7 +39,6 @@
         🎯 
     </button> 
     
-    <!-- NUEVO: Botón para el Modo Nocturno -->
     <button id="btn-darkMode" class="btn-dark" title="Modo Nocturno">
         🌙
     </button>
@@ -50,15 +48,10 @@
         <div class="legend-item"><span class="circle tur"></span> Turismo</div> 
         <div class="legend-item"><span class="circle reci"></span> Reciclaje</div> 
         <div class="legend-item"><span class="circle para"></span> Paraderos</div> 
-    </div> <!-- Cierra la caja de la leyenda. -->
+    </div> <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script> 
     
-    <!-- 1. PRIMERO: Leaflet (El mapa base) -->
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script> 
-    
-    <!-- 2. SEGUNDO: Plugin de Flechas (Desde un servidor más estable) -->
     <script src="https://unpkg.com/leaflet-polylinedecorator@1.6.0/dist/leaflet.polylineDecorator.js"></script>
 
-    <!-- 3. TERCERO: Tu código con la lógica (Siempre debe ir al final) -->
     <script src="mapa.js"></script> 
 </body> 
 </html>

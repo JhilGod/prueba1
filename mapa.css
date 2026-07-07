@@ -166,7 +166,7 @@ html, body { /* # Selecciona toda la estructura base de tu página web. */
 
 /* Popups (Tarjetas al hacer clic en un marcador) */
 .custom-popup .leaflet-popup-content-wrapper { padding: 0; overflow: hidden; border-radius: 15px; } /* # Quita márgenes y redondea bordes. */
-.custom-popup .leaflet-popup-content { margin: 0; width: 300px !important; } /* # Fuerza un ancho de 300px exactos. */
+.custom-popup .leaflet-popup-content { margin: 0; width: 280px !important; max-width: 85vw; } /* # Fuerza un ancho adaptable al celular. */
 .popup-img { width: 100%; height: 120px; object-fit: cover; } /* # Adapta la imagen sin deformarla. */
 .popup-info { padding: 12px; } /* # Da espacio interno al texto debajo de la imagen. */
 
