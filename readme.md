@@ -1,3 +1,0 @@
-## Readme
-
-![ReadmeFoto](ReadmeFoto.png)
